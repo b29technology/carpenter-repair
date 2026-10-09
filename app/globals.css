@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F9F6F0;
+  --foreground: #1A1A1A;
+  --wood-tan: #C59B63;
+  --wood-tan-hover: #B58A52;
+  --wood-dark: #1F1B18;
+  --wood-cream: #F5EFE6;
+  --wood-sand: #EFE8DD;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom artisanal utilities */
+.bg-wood-cream {
+  background-color: #F9F6F0;
+}
+
+.bg-wood-sand {
+  background-color: #F3ECE1;
+}
+
+.bg-wood-tan {
+  background-color: #C59B63;
+}
+
+.text-wood-tan {
+  color: #C59B63;
+}
+
+.border-wood-tan {
+  border-color: #C59B63;
+}
+
+.hover\:bg-wood-tan-hover:hover {
+  background-color: #B58A52;
+}
+
+/* Circular Rotating Stamp Animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
