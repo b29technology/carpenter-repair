@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { HYDERABAD_AREAS } from "@/data/areas";
 import { CARPENTER_SERVICES } from "@/data/services";
 import { CustomDropdown, DropdownOption } from "@/components/CustomDropdown";
+import { trackUserAction } from "@/lib/analytics";
 import { 
   Phone, 
   MapPin, 
@@ -107,7 +108,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     }));
   }, [formData.serviceSlug]);
 
-  // Form submission handler with WhatsApp formatting
+  // Form submission handler with WhatsApp formatting & email dispatch
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -122,6 +123,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     const selectedServiceName = selectedServiceObj ? selectedServiceObj.shortTitle : "Carpentry";
     const selectedSubObj = selectedServiceObj?.subServices.find((sub) => sub.id === formData.subService);
     const subServiceName = selectedSubObj ? selectedSubObj.name : "Doorstep Inspection";
+
+    // Asynchronously dispatch email & telegram notification
+    fetch("/api/send-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.name || "Customer",
+        phone: formData.phone,
+        area: selectedAreaName,
+        service: selectedServiceName,
+        subService: subServiceName,
+        price: selectedSubObj?.price || "",
+        preferredDate: "Today (Express)",
+        preferredSlot: formData.timeSlot,
+        propertyType: formData.propertyType,
+        notes: formData.notes,
+        source: "Homepage / Area Hero Quick Form",
+        pageUrl: typeof window !== "undefined" ? window.location.href : "",
+        pagePath: typeof window !== "undefined" ? window.location.pathname : "",
+        referrer: typeof document !== "undefined" ? document.referrer : "",
+        device: typeof window !== "undefined" ? (window.innerWidth < 768 ? "Mobile" : "Desktop") : "",
+      }),
+    }).catch((err) => {
+      console.error("Failed to dispatch booking notification:", err);
+    });
 
     const payload = `*NEW VERIFIED CARPENTER ORDER (HYDERABAD)*%0A` +
       `• *Customer:* ${formData.name || "Customer"}%0A` +
@@ -243,6 +269,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="flex items-center gap-3 pt-1">
               <a
                 href={`tel:${siteConfig.phoneRaw}`}
+                onClick={() => {
+                  trackUserAction({
+                    eventType: "CALL_CLICK",
+                    buttonLabel: "Hero Direct Urgent Call Line",
+                    area: areaName,
+                  });
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-[#1F1B18] bg-white hover:bg-[#F3ECE1] border border-[#EFE8DD] shadow-2xs transition-colors"
               >
                 <div className="w-5 h-5 rounded-full bg-[#C59B63] text-white flex items-center justify-center">

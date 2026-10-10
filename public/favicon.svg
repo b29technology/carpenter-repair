@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Brand Gold Background Canvas -->
+  <rect width="64" height="64" rx="16" fill="#C59B63" />
+  
+  <!-- Subtle Soft Center Circle -->
+  <circle cx="32" cy="32" r="23" fill="#1F1B18" fill-opacity="0.12" />
+
+  <!-- Official Lucide Hammer Icon -->
+  <g transform="translate(13, 13) scale(1.58)" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9" />
+    <path d="M17.64 15 22 10.64" />
+    <path d="m20.91 3.26-6.36 6.36" />
+    <path d="m16.14 8 2.5-2.5a2 2 0 0 0 0-2.83l-.7-.7a2 2 0 0 0-2.83 0l-2.5 2.5" />
+    <path d="m19 12-2.5-2.5" />
+  </g>
+</svg>

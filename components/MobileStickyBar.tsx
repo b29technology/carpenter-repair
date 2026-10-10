@@ -2,7 +2,9 @@
 
 import React from "react";
 import { siteConfig } from "@/config/site";
-import { Phone, MessageSquare, Calendar } from "lucide-react";
+import { Phone, Calendar } from "lucide-react";
+import { trackUserAction } from "@/lib/analytics";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 interface MobileStickyBarProps {
   onOpenBooking?: () => void;
@@ -25,6 +27,13 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
         {/* Direct Call Button */}
         <a
           href={`tel:${siteConfig.phoneRaw}`}
+          onClick={() => {
+            trackUserAction({
+              eventType: "CALL_CLICK",
+              buttonLabel: "Mobile Sticky - Call Now",
+              area: areaName,
+            });
+          }}
           className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-[#1F1B18] text-white active:scale-95 transition-all text-center"
         >
           <Phone className="w-4 h-4 text-[#C59B63] mb-0.5" />
@@ -36,15 +45,29 @@ export const MobileStickyBar: React.FC<MobileStickyBarProps> = ({
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            trackUserAction({
+              eventType: "WHATSAPP_CLICK",
+              buttonLabel: "Mobile Sticky - WhatsApp",
+              area: areaName,
+            });
+          }}
           className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-[#25D366] text-white active:scale-95 transition-all text-center"
         >
-          <MessageSquare className="w-4 h-4 mb-0.5" />
+          <WhatsAppIcon className="w-4 h-4 mb-0.5 text-white" />
           <span className="text-[11px] font-bold">WhatsApp</span>
         </a>
 
         {/* Instant Booking Modal */}
         <button
-          onClick={onOpenBooking}
+          onClick={() => {
+            trackUserAction({
+              eventType: "MODAL_OPEN",
+              buttonLabel: "Mobile Sticky - Book Visit",
+              area: areaName,
+            });
+            onOpenBooking?.();
+          }}
           className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-[#C59B63] text-white active:scale-95 transition-all text-center cursor-pointer"
         >
           <Calendar className="w-4 h-4 mb-0.5" />

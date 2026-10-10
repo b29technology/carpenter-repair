@@ -5,6 +5,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { HYDERABAD_AREAS } from "@/data/areas";
 import { CARPENTER_SERVICES } from "@/data/services";
+import { trackUserAction } from "@/lib/analytics";
 import { 
   Phone, 
   MapPin, 
@@ -156,6 +157,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           <div className="flex items-center gap-4">
             <a 
               href={`tel:${siteConfig.phoneRaw}`} 
+              onClick={() => {
+                trackUserAction({
+                  eventType: "CALL_CLICK",
+                  buttonLabel: "Top Announcement Phone Call",
+                });
+              }}
               className="flex items-center gap-1.5 hover:text-slate-900 transition-colors font-bold"
             >
               <Phone className="w-3.5 h-3.5" /> {siteConfig.phone}
@@ -418,6 +425,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href={`tel:${siteConfig.phoneRaw}`}
+                onClick={() => {
+                  trackUserAction({
+                    eventType: "CALL_CLICK",
+                    buttonLabel: "Navbar Header Direct Call Button",
+                  });
+                }}
                 className="inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full text-xs font-bold text-white bg-[#C59B63] hover:bg-[#B58A52] shadow-xs active:scale-95 transition-all"
               >
                 <span className="flex items-center gap-1.5">
@@ -434,6 +447,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             <div className="flex lg:hidden items-center gap-2">
               <a
                 href={`tel:${siteConfig.phoneRaw}`}
+                onClick={() => {
+                  trackUserAction({
+                    eventType: "CALL_CLICK",
+                    buttonLabel: "Navbar Header Mobile Phone Icon",
+                  });
+                }}
                 className="p-2 rounded-full bg-[#C59B63] text-white"
                 aria-label="Call Carpenter"
               >
@@ -518,6 +537,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <div className="pt-3 pb-1 text-xs font-bold uppercase text-[#8A7D71] px-1">
                 Top Hyderabad Areas
               </div>
+
               <div className="grid grid-cols-2 gap-1.5 px-0.5">
                 {HYDERABAD_AREAS.slice(0, 10).map((a) => (
                   <Link
@@ -550,6 +570,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             <div className="pt-2 border-t border-[#EFE8DD]">
               <button
                 onClick={() => {
+                  trackUserAction({
+                    eventType: "MODAL_OPEN",
+                    buttonLabel: "Navbar Mobile Drawer Book Button",
+                  });
                   setIsMobileMenuOpen(false);
                   if (onOpenBooking) onOpenBooking();
                 }}

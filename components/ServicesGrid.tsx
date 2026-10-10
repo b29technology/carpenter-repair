@@ -6,10 +6,10 @@ import {
   ShieldCheck,
   ArrowUpRight,
   Hammer,
-  MessageSquare,
   Star
 } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 
 interface ServicesGridProps {
   onOpenBooking?: (serviceName?: string) => void;
@@ -143,7 +143,7 @@ export const ServicesGrid: React.FC<ServicesGridProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white bg-[#C59B63] hover:bg-[#B58A52] transition-colors"
               >
-                <MessageSquare className="w-3.5 h-3.5" />
+                <WhatsAppIcon className="w-3.5 h-3.5 text-white" />
                 WhatsApp
               </a>
             </div>

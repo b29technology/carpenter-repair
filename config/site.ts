@@ -8,15 +8,15 @@ export const siteConfig = {
   shortName: "Carpenter Repair",
   description:
     "Carpenter Repair — Hyderabad's #1 doorstep carpenter service. Door repair, sliding wardrobe, modular kitchen, furniture assembly & wood polish. Background-verified craftsmen across 35+ localities. 30-min home visit.",
-  url: "https://www.hyderabadcarpenterrepair.in",
-  ogImage: "https://www.hyderabadcarpenterrepair.in/og-image.jpg",
+  url: "https://carpenterrepair.com",
+  ogImage: "https://carpenterrepair.com/og-image.jpg",
   
   // Contact details (Easily editable)
-  phone: "+91 91008 24567",
-  phoneRaw: "+919100824567",
-  whatsappNumber: "919100824567",
+  phone: "+91 63047 39440",
+  phoneRaw: "+916304739440",
+  whatsappNumber: "916304739440",
   whatsappMessage: "Hello, I need carpenter repair service in Hyderabad. Please share quick estimate & availability.",
-  email: "support@hyderabadcarpenterrepair.in",
+  email: "support@carpenterrepair.com",
   
   // Operating parameters
   workingHours: "Mon - Sun: 8:00 AM - 9:30 PM",

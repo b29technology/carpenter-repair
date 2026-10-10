@@ -1,14 +1,17 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { HYDERABAD_AREAS } from "@/data/areas";
 import { CARPENTER_SERVICES } from "@/data/services";
+import { trackUserAction } from "@/lib/analytics";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { 
   Phone, 
   MapPin, 
   Clock, 
   ShieldCheck, 
-  MessageSquare,
   Hammer
 } from "lucide-react";
 
@@ -38,6 +41,12 @@ export const Footer: React.FC = () => {
             <div className="space-y-2 pt-2 text-xs">
               <a 
                 href={`tel:${siteConfig.phoneRaw}`} 
+                onClick={() => {
+                  trackUserAction({
+                    eventType: "CALL_CLICK",
+                    buttonLabel: "Footer Phone Link",
+                  });
+                }}
                 className="flex items-center gap-2 text-[#C59B63] hover:text-white font-bold transition-colors"
               >
                 <Phone className="w-4 h-4" /> {siteConfig.phone}
@@ -56,9 +65,15 @@ export const Footer: React.FC = () => {
                 href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(siteConfig.whatsappMessage)}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  trackUserAction({
+                    eventType: "WHATSAPP_CLICK",
+                    buttonLabel: "Footer WhatsApp Chat Button",
+                  });
+                }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#C59B63] hover:bg-[#B58A52] text-white text-xs font-bold transition-colors"
               >
-                <MessageSquare className="w-4 h-4" /> Chat on WhatsApp
+                <WhatsAppIcon className="w-4 h-4 text-white" /> Chat on WhatsApp
               </a>
             </div>
           </div>

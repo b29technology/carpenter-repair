@@ -1,46 +1,43 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { HYDERABAD_AREAS } from "@/data/areas";
-import { CARPENTER_SERVICES } from "@/data/services";
+import { CARPENTER_SERVICES_MASTER } from "@/data/servicesMaster";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = siteConfig.url;
+  const baseUrl = siteConfig.url.replace(/\/+$/, "");
+  const currentDate = new Date();
 
-  // 1. Homepage & Core Pages
-  const routes: MetadataRoute.Sitemap = [
+  // 1. Core Priority Landing Pages
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      url: `${baseUrl}/`,
+      lastModified: currentDate,
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95,
     },
   ];
 
-  // 2. All 25+ Hyderabad Area Pages
-  HYDERABAD_AREAS.forEach((area) => {
-    routes.push({
-      url: `${baseUrl}/hyderabad/${area.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    });
-  });
+  // 2. Specialized Carpentry Service Category Pages (All 8 Master Hubs)
+  const serviceRoutes: MetadataRoute.Sitemap = CARPENTER_SERVICES_MASTER.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
 
-  // 3. All 6 High-Intent Service Category Pages
-  CARPENTER_SERVICES.forEach((service) => {
-    routes.push({
-      url: `${baseUrl}/services/${service.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.85,
-    });
-  });
+  // 3. Hyperlocal Hyderabad Dispatch Pages (All 25+ Localities)
+  const areaRoutes: MetadataRoute.Sitemap = HYDERABAD_AREAS.map((area) => ({
+    url: `${baseUrl}/hyderabad/${area.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
 
-  return routes;
+  return [...staticRoutes, ...serviceRoutes, ...areaRoutes];
 }

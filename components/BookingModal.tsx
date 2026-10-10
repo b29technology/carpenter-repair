@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { siteConfig } from "@/config/site";
 import { HYDERABAD_AREAS } from "@/data/areas";
 import { CARPENTER_SERVICES_MASTER, getAllSkus, ServiceSku } from "@/data/servicesMaster";
+import { trackUserAction } from "@/lib/analytics";
 import { 
   X, 
   Clock, 
@@ -66,6 +67,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   // Synchronize state whenever props change or modal opens
   useEffect(() => {
     if (!isOpen) return;
+
+    // Track modal open event
+    trackUserAction({
+      eventType: "MODAL_OPEN",
+      buttonLabel: preselectedSubService ? `Modal Opened for ${preselectedSubService}` : "Booking Modal Triggered",
+      service: preselectedService,
+      subService: preselectedSubService,
+      price: preselectedPrice,
+      area: preselectedArea,
+    });
 
     if (preselectedArea) {
       setArea(preselectedArea);
@@ -265,6 +276,30 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
 
     const finalDate = visitDate === "Custom Date" && customDate ? customDate : visitDate;
+
+    // Asynchronously dispatch email & telegram notification
+    fetch("/api/send-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name || "Customer",
+        phone,
+        area: area || "Hyderabad Central Hub",
+        service: service || "General Carpentry",
+        subService: subService || "Doorstep Inspection & Diagnosis",
+        price: price || "",
+        preferredDate: finalDate,
+        preferredSlot,
+        notes,
+        source: "Booking Modal (Global CTA / Rate Card)",
+        pageUrl: typeof window !== "undefined" ? window.location.href : "",
+        pagePath: typeof window !== "undefined" ? window.location.pathname : "",
+        referrer: typeof document !== "undefined" ? document.referrer : "",
+        device: typeof window !== "undefined" ? (window.innerWidth < 768 ? "Mobile" : "Desktop") : "",
+      }),
+    }).catch((err) => {
+      console.error("Failed to dispatch booking notification:", err);
+    });
 
     const message = `*NEW VERIFIED CARPENTER BOOKING (HYDERABAD)*%0A` +
       `• *Customer Name:* ${name || "Customer"}%0A` +
